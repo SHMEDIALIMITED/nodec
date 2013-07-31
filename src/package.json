@@ -19,7 +19,9 @@
     "mongo-connect": "0.0.6",
     "underscore": "~1.4.4",
     "crypto": "0.0.3",
-    "node-uuid": "~1.4.0"
+    "node-uuid": "~1.4.0",
+    "passport": "~0.1.17",
+    "passport-http-bearer": "~0.2.1"
   },
   "bugs": {
     "url": "https://github.com/SHMEDIALIMITED/web-app-basic/issues"

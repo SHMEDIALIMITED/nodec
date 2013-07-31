@@ -17,7 +17,8 @@ var User = new Schema({
     password: { type: String, required: true, set: encryptPassword},
     salt : { type:String, default: uuid.v1},
     level: { type: Number, default:0 },
-    resetToken: {type:String, default:''}
+    resetToken: {type:String, default:''},
+    accessToken: {type:String, default:''},
 });
 
 User.plugin(AbstractModel, {index:true});
