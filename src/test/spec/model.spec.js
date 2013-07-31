@@ -1,27 +1,57 @@
+var config = require('../../config/config')['test'];
 var mongoose = require('mongoose');
+var Models = require('../../app/models');
 
-describe('sample spec node', function(){
+mongoose.connect(config.db);
 
-  it('should pass', function(){
-    expect(1+2).toEqual(3);
-  });
 
-  it('shows asynchronous test', function(){
-    setTimeout(function(){
-      expect('second').toEqual('second');
-      asyncSpecDone();
-    }, 1);
-    expect('first').toEqual('first');
-    asyncSpecWait();
-  });
 
-  it('shows asynchronous test node-style', function(done){
-    setTimeout(function(){
-      expect('second').toEqual('second');
-      // If you call done() with an argument, it will fail the spec 
-      // so you can use it as a handler for many async node calls
-      done();
-    }, 1);
-    expect('first').toEqual('first');
-  });
+
+describe('User Model', function(){
+
+    var User = Models.User;
+    var password = Math.random().toString();
+    var email = password.substr(0,4) + '@' + password.substr(4,7) + '.com';
+
+
+
+    it('should be defined', function(){
+        expect(User).toBeDefined();
+    });
+
+
+    it('should add one new user', function (done){
+        User.count({}, function(err, numUsers) {
+            var user = new User({email:email, password:password});
+            user.save(function(err, user) {
+                User.count({}, function(err, numUsersInc) {
+                    expect(numUsersInc).toBe(numUsers+1);
+                    done();
+                });
+            });
+        });
+    });
+
+    it('should not allow to add the same email twice', function(done){
+        var user = new User({email:email, password:password});
+        user.save( function(err, user) {
+            expect(err.code).toBe(11000);
+            expect(user).toBeUndefined();
+            done();
+        });
+    });
+
+    it('should authenticate test email and password', function(done) {
+        User.findOne({email: email}, function(err, user) {
+            expect(user.isValidPassword(password)).toBeTruthy();
+            done();
+        });
+    });
+
+    it('should not authenticate test email with wrong password', function(done) {
+        User.findOne({email: email}, function(err, user) {
+            expect(user.isValidPassword(password)).toBeTruthy();
+            done();
+        });
+    });
 });

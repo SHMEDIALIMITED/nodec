@@ -5,3 +5,33 @@
  * Time: 20:57
  * To change this template use File | Settings | File Templates.
  */
+var mongoose = require('mongoose'),
+    uuid = require('node-uuid'),
+    Schema = mongoose.Schema;
+var crypto = require('crypto');
+var AbstractModel = require('./AbstractModel');
+
+
+var User = new Schema({
+    email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+    password: { type: String, required: true, set: encryptPassword},
+    salt : { type:String, default: uuid.v1},
+    level: { type: Number, default:0 },
+    resetToken: {type:String, default:''}
+});
+
+User.plugin(AbstractModel, {index:true});
+
+User.methods.isValidPassword = function(passwordString) {
+    return this.password === hash(passwordString, this.salt);
+};
+
+function hash(password, salt) {
+    return crypto.createHmac('sha256', salt).update(password).digest('hex');
+}
+
+function encryptPassword(password) {
+    return hash(password, this.salt);
+}
+
+module.exports =  mongoose.model('User', User);

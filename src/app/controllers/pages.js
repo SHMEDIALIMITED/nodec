@@ -5,8 +5,7 @@ module.exports = function(config) {
 	api.index = function(req, res) {
 		res.render('index', {layout:false,locals:{
 			version:config.version, 
-			title: 'SH MEDIA', description:'Web App Template', 
-			fbAppID: config.facebook.clientID}});
+			title: 'SH MEDIA', description:'Web App Template'}});
 	}
 
 	api.canvas = function(req, res) {

@@ -4,15 +4,19 @@ module.exports = {
       version : JSON.parse(fs.readFileSync('./package.json')).version,
       root: require('path').normalize(__dirname + '/..'),
       app: {
-        name: 'Web App Dev'
+        name: 'Nodec Dev'
       },
-      db: 'mongodb://localhost/tallest_tower_dev',
-      facebook: {
-          clientID: "351418368295988"
-        , clientSecret: "a5a572f8cbca84075fbeeec6a65e1657"
-        , callbackURL: "http://localhost:3000/auth/facebook/callback"
-      },
+      db: 'mongodb://localhost/nodec'
       
+    },
+    test: {
+        version : JSON.parse(fs.readFileSync('./package.json')).version,
+        root: require('path').normalize(__dirname + '/..'),
+        app: {
+            name: 'Nodec Test'
+        },
+        db: 'mongodb://localhost/nodec-test'
+
     }
   , production: {
       version : JSON.parse(fs.readFileSync('./package.json')).version,
@@ -20,11 +24,8 @@ module.exports = {
       app: {
         name: 'Web App'
       },
-      db: process.env.MONGOLAB_URI,
-      facebook: {
-          clientID: process.env.FACEBOOK_APP_ID
-        , clientSecret: process.env.FACEBOOK_SECRET
-      },
+      db: process.env.MONGOLAB_URI
+
 
     }
 }

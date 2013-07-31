@@ -7,31 +7,6 @@ var express = require('express');
 var Models = require('../app/models');
 var base64url = require('b64url');
 
-function parseSignedRequest(signed_request, secret) {
-    if(!signed_request) return;
-    var crypto = require('crypto');
-    encoded_data = signed_request.split('.',2);
-    // decode the data
-    sig = encoded_data[0];
-    json = base64url.decode(encoded_data[1]);
-    data = JSON.parse(json); // ERROR Occurs Here!
-    
-    // check algorithm - not relevant to error
-    if (!data.algorithm || data.algorithm.toUpperCase() != 'HMAC-SHA256') {
-        console.error('Unknown algorithm. Expected HMAC-SHA256');
-        return null;
-    }
- 
-    // check sig - not relevant to error
-    expected_sig = crypto.createHmac('sha256',secret).update(encoded_data[1]).digest('base64').replace(/\+/g,'-').replace(/\//g,'_').replace('=','');
-    if (sig !== expected_sig) {
-        console.error('Bad signed JSON Signature!');
-        return null;
-    }
- 
-    return data;
-}
-
 module.exports = function (app, config) {
 
   var User = Models.User;
@@ -51,11 +26,11 @@ module.exports = function (app, config) {
   // set views path, template engine and default layout
   app.set('port', process.env.PORT || 3000);
 
- app.engine('.html', require('ejs').__express);
+  app.engine('.html', require('ejs').__express);
 
-// Optional since express defaults to CWD/views
+    // Optional since express defaults to CWD/views
 
-app.set('views',  config.root + '/app/views');
+    app.set('views',  config.root + '/app/views');
 
 // Without this you would need to
 // supply the extension to res.render()
@@ -67,33 +42,6 @@ app.set('view engine', 'html');
     app.use(express.favicon())
     // cookieParser should be above session
     app.use(express.cookieParser())
-    app.use(function(req, res, next) {
-       
-        var sr = parseSignedRequest(req.cookies['fbsr_' + config.facebook.clientID], config.facebook.clientSecret);
-        
-        if(sr) {
-          req.userID = sr.user_id;
-          req.code = sr.code;
-        }
-
-        next();
-        
-        
-
-      // if(!sr) {
-      //   res.status(401).send('Authentication Error'); 
-      // }else {
-
-      //   User.findOne({fbID: sr.user_id}, function(err, user) {
-      //     console.log('MW', user)
-      //     //if(!user) res.status(401).send('Authentication Error'); 
-      //     req.user = user;
-      //     //console.log(next())
-      //     next();
-      //   }); 
-      // }
-     
-    });
     // bodyParser should be above methodOverride
     app.use(express.bodyParser())
     app.use(express.methodOverride())
