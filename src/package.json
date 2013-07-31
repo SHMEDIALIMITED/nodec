@@ -1,6 +1,6 @@
 {
   "name": "SH-MEDIA-basic-main",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Patrick Wolleb <patrick.wolleb@shmedia.co.uk",
   "description": "Web app template for Node.js with Backbone/Require frontend for deployment on Heroku",
   "scripts": {
