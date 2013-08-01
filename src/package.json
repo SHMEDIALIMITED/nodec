@@ -1,10 +1,12 @@
 {
-  "name": "SH-MEDIA-basic-main",
+  "name": "Nodec",
   "version": "0.0.7",
   "author": "Patrick Wolleb <patrick.wolleb@shmedia.co.uk",
   "description": "Web app template for Node.js with Backbone/Require frontend for deployment on Heroku",
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "test" : "jasmine-node test/spec/",
+    "admin": "node create"
   },
   "engines": {
     "node": "0.8.14",

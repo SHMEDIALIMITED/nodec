@@ -27,6 +27,21 @@ User.methods.isValidPassword = function(passwordString) {
     return this.password === hash(passwordString, this.salt);
 };
 
+User.methods.login = function(passwordString, cb) {
+    if(this.password === hash(passwordString, this.salt)) {
+        this.accessToken = uuid.v4();
+        this.save(cb);
+    }else {
+        cb({code:401, message:'Unauthorized'});
+    }
+
+};
+
+User.methods.logout = function(cb) {
+    this.accessToken = '';
+    this.save(cb)
+};
+
 function hash(password, salt) {
     return crypto.createHmac('sha256', salt).update(password).digest('hex');
 }
