@@ -4,8 +4,9 @@
  */
 
 var express = require('express')
-  , http = require('http')
-  , path = require('path');
+  , https = require('https')
+  , path = require('path')
+  , fs = require('fs');
 
 // Load configurations
 var env = process.env.NODE_ENV || 'development'
@@ -24,7 +25,11 @@ require('./config/express')(app, config);
 // Bootstrap routes
 require('./config/routes')(app, config);
 
+var options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('key-cert.pem')
+};
 
-http.createServer(app).listen(app.get('port'), function(){
+https.createServer(options, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

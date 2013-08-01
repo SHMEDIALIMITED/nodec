@@ -3,7 +3,7 @@ var passport = require('passport');
 module.exports = function (app, config) { 
 
 	var pages = require('../app/controllers/pages')(config);
-    var authorisation = require('../app/controllers/authorisation')(config);
+    var authentications = require('../app/controllers/authentications')(config);
     var webhook = require('../app/controllers/webhook')(app,config);
 
 	// Web App
@@ -12,8 +12,8 @@ module.exports = function (app, config) {
     // Authentication
     app.get('/login' , pages.login);
 
-    app.post('/api/authorization' , authorisation.create);
-    app.delete('/api/authorization' , passport.authenticate('bearer', { session: false }),  authorisation.delete);
+    app.post('/api/authentications' , authentications.create);
+    app.del('/api/authentications' , passport.authenticate('bearer', { session: false }),  authentications.delete);
 
     // Web Hook
     app.get('/webhook/:secret',  webhook.post)

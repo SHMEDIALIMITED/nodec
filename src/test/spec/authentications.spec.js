@@ -17,8 +17,8 @@ if(config.db) {
 
 
 
-describe('Authorisation Controller', function(){
-    var authorisation = require('../../app/controllers/authorisation')(config);
+describe('authentications Controller', function(){
+    var authentications = require('../../app/controllers/authentications')(config);
     var User = Models.User;
     var password = Math.random().toString();
     var email = password.substr(0,4) + '@' + password.substr(4,7) + '.com';
@@ -27,11 +27,11 @@ describe('Authorisation Controller', function(){
 
 
     it('should have a create method', function() {
-        expect(typeof authorisation.create).toBe('function');
+        expect(typeof authentications.create).toBe('function');
     });
 
     it('should have a delete method', function() {
-        expect(typeof authorisation.delete).toBe('function');
+        expect(typeof authentications.del).toBe('function');
     });
 
     describe('Create method', function() {
@@ -46,7 +46,7 @@ describe('Authorisation Controller', function(){
                 expect(payload.access_token.length).toBe(36);
                 done();
             }}
-            authorisation.create(req, res);
+            authentications.create(req, res);
         });
 
         it('should call response.send() with status 401, Unauthorized when using wrong password', function(done) {
@@ -58,7 +58,7 @@ describe('Authorisation Controller', function(){
                 expect(payload).toBe('Unauthorized');
                 done();
             }}
-            authorisation.create(req, res);
+            authentications.create(req, res);
 
         });
 
@@ -71,7 +71,7 @@ describe('Authorisation Controller', function(){
                 expect(payload).toBe('Unauthorized');
                 done();
             }}
-            authorisation.create(req, res);
+            authentications.create(req, res);
 
         });
     });
@@ -87,7 +87,7 @@ describe('Authorisation Controller', function(){
                 expect(user.accessToken).toBe('');
                 done();
             }}
-            authorisation.delete(req, res);
+            authentications.del(req, res);
         });
 
         it('should call response.send() with status 401, Unauthorized when no access_token is sent', function(done) {
@@ -98,7 +98,7 @@ describe('Authorisation Controller', function(){
                 expect(payload).toBe('Unauthorized');
                 done();
             }}
-            authorisation.delete(req, res);
+            authentications.del(req, res);
         });
     })
 

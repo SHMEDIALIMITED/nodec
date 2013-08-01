@@ -29,7 +29,7 @@ module.exports = function (app, config) {
     app.use(express.logger('dev'))
 
     // set views path, template engine and default layout
-    app.set('port', process.env.PORT || 3000);
+    app.set('port', process.env.PORT || 8443);
 
     app.engine('.html', require('ejs').__express);
 

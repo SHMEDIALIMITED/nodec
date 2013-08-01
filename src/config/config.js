@@ -17,8 +17,8 @@ module.exports = {
         },
         db: 'mongodb://localhost/nodec-test'
 
-    }
-  , production: {
+    },
+    production: {
       version : JSON.parse(fs.readFileSync('./package.json')).version,
       root: require('path').normalize(__dirname + '/..'),
       app: {

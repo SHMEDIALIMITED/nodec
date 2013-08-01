@@ -26,7 +26,7 @@ module.exports = function(config) {
             });
         },
 
-        delete : function(req, res) {
+        del : function(req, res) {
 
             User.findOne({accessToken: req.query.access_token}, function(err, user) {
 
