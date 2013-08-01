@@ -13,11 +13,15 @@ module.exports = function(config) {
     return {
 
         create : function(req, res) {
+
             User.findOne({ email: req.body.email }, function(err, user) {
+
                 if(!user) return res.send(401, 'Unauthorized');
+
                 user.login(req.body.password, function(err, user) {
+
                     if(!err) return res.send(201, {access_token: user.accessToken});
-                    else if(err) return res.send(err.code, err.message);
+                    else return res.send(err.code, err.message);
                 });
             });
         },
@@ -25,7 +29,9 @@ module.exports = function(config) {
         delete : function(req, res) {
 
             User.findOne({accessToken: req.query.access_token}, function(err, user) {
+
                 if(!user) return res.send(401, 'Unauthorized');
+
                 user.logout(function(err, user) {
                     return res.send(204, 'Resource deleted successfully.')
                 });

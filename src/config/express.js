@@ -51,6 +51,7 @@ module.exports = function (app, config) {
     app.use(express.methodOverride());
     // routes should be at the last
 
+    var User = Models.User;
     app.use(passport.initialize());
     passport.use(new BearerStrategy(
         function(token, done) {

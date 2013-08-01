@@ -11,11 +11,12 @@ module.exports = function (app, config) {
 
     // Authentication
     app.get('/login' , pages.login);
-    app.post('/login' , authorisation.create);
-    app.post('/logout' , authorisation.del);
+
+    app.post('/api/authorization' , authorisation.create);
+    app.delete('/api/authorization' , passport.authenticate('bearer', { session: false }),  authorisation.delete);
 
     // Web Hook
-    app.get('/webhook/:secret', webhook.post)
+    app.get('/webhook/:secret',  webhook.post)
 
 
 }
