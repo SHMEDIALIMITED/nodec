@@ -41,9 +41,9 @@ describe('authentications Controller', function(){
             var req = {body:{email:email, password:password}};
             var res = {send: function(status, payload) {
                 expect(status).toBe(201)
-                expect(payload.access_token).not.toBeUndefined();
-                expect(payload.access_token).not.toBe('');
-                expect(payload.access_token.length).toBe(36);
+                expect(payload.data.access_token).not.toBeUndefined();
+                expect(payload.data.access_token).not.toBe('');
+                expect(payload.data.access_token.length).toBe(36);
                 done();
             }}
             authentications.create(req, res);

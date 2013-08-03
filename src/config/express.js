@@ -8,6 +8,7 @@ var Models = require('../app/models');
 var base64url = require('b64url');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
+var responseFormater = require('../app/controllers/utils/ResponseFormater');
 
 
 module.exports = function (app, config) {
@@ -57,7 +58,7 @@ module.exports = function (app, config) {
         function(token, done) {
             User.findOne({ accessToken: token }, function (err, user) {
                 if (err) { return done(err); }
-                if (!user) { return done(null, false); }
+                if (!user) { return done(null, false, responseFormater.jsend(401, 'Unauthorized')); }
                 return done(null, user, { scope: 'read' });
             });
         }

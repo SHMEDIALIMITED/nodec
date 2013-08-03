@@ -13,7 +13,7 @@ module.exports = function (app, config) {
     app.get('/login' , pages.login);
 
     app.post('/api/authentications' , authentications.create);
-    app.del('/api/authentications' , passport.authenticate('bearer', { session: false }),  authentications.delete);
+    app.del('/api/authentications' , passport.authenticate('bearer', { session: false }),  authentications.del);
 
     // Web Hook
     app.get('/webhook/:secret',  webhook.post)
