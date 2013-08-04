@@ -4,7 +4,7 @@
     <title><%= title %> : <%= description %></title>
     <link rel='stylesheet' href='css/main.css' />
 
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
         $(function() {
 
@@ -14,10 +14,10 @@
 
                $.ajax({
                    type: "POST",
-                   url: 'api/authorization',
+                   url: 'api/authentications',
                    data: {email:$('input[type="email"]').val(), password:$('input[type="password"]').val()},
                    success: function(data, type, xhr) {
-                     token = data.access_token;
+                     token = data.data.access_token;
                    console.log(data)
                    }
                });
@@ -30,7 +30,7 @@
 
                $.ajax({
                    type: "DELETE",
-                   url: 'api/authorization?access_token=' + token,
+                   url: 'api/authentications?access_token=' + token,
 
                    success: function(data, type, xhr) {
                        console.log(data)

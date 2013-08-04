@@ -1,4 +1,5 @@
 var passport = require('passport');
+var authenticate = require('../app/controllers/middleware/authenticate');
 
 module.exports = function (app, config) { 
 
@@ -7,13 +8,13 @@ module.exports = function (app, config) {
     var webhook = require('../app/controllers/webhook')(app,config);
 
 	// Web App
-	app.get('/' , passport.authenticate('bearer', { session: false }), pages.index);
+	app.get('/', pages.index);
 
     // Authentication
     app.get('/login' , pages.login);
 
     app.post('/api/authentications' , authentications.create);
-    app.del('/api/authentications' , passport.authenticate('bearer', { session: false }),  authentications.del);
+    app.del('/api/authentications' , authenticate,  authentications.del);
 
     // Web Hook
     app.get('/webhook/:secret',  webhook.post)

@@ -53,16 +53,6 @@ module.exports = function (app, config) {
     // routes should be at the last
 
     var User = Models.User;
-    app.use(passport.initialize());
-    passport.use(new BearerStrategy(
-        function(token, done) {
-            User.findOne({ accessToken: token }, function (err, user) {
-                if (err) { return done(err); }
-                if (!user) { return done(null, false, responseFormater.jsend(401, 'Unauthorized')); }
-                return done(null, user, { scope: 'read' });
-            });
-        }
-    ));
 
     app.configure(function() {
         app.use(app.router);

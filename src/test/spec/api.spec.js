@@ -100,9 +100,6 @@ describe('REST API :: ', function() {
             it('should fail deleting authentication due to missing access token', function(done){
                 superagent.del('https://localhost:8443/api/authentications')
                     .end(function(e,res){
-
-
-
                         checkJSendFormat(res.body);
                         expect(res.status).toBe(401);
                         expect(res.body.status).toBe('fail');
