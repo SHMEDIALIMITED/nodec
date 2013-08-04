@@ -271,7 +271,7 @@ describe('REST API :: ', function() {
             it('should update an existing user', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         email : newEmail,
                         password : newPassword
@@ -290,7 +290,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if access token is invalid', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + '111')
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + '111')
                     .send({
                         email : newEmail,
                         password : newPassword
@@ -308,7 +308,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user id id does not exist', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + '080980' + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + '080980' + '?access_token=' + token)
                     .send({
                         email : newEmail,
                         password : newPassword
@@ -325,7 +325,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains no email', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         password : newPassword
                     })
@@ -341,7 +341,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains no password', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         email : newEmail
                     })
@@ -357,7 +357,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains no password and no email', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
 
                     })
@@ -374,7 +374,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains invalid password and email', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         email: newEmail.substr(0, 5),
                         password: password.substr(0, 4)
@@ -393,7 +393,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains invalid password', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         email: newEmail,
                         password: password.substr(0, 4)
@@ -410,7 +410,7 @@ describe('REST API :: ', function() {
             it('should fail to update an existing user if data contains invalid email', function(done){
                 var newPassword = Math.random().toString();
                 var newEmail = newPassword.substr(0,6) + '@' + newPassword.substr(6,4) + '.com';
-                superagent.get('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
                     .send({
                         email: newEmail.substr(0, 5),
                         password: password
@@ -426,6 +426,42 @@ describe('REST API :: ', function() {
         });
 
         describe('DELETE ', function(){
+
+            it('should fail to delete an existing user by ID if access token is invalid', function(done){
+
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + '1234')
+                    .end(function(e,res){
+                        checkJSendFormat(res.body);
+                        expect(res.status).toBe(401);
+                        expect(res.body.status).toBe('fail');
+                        expect(res.body.data).toBe('Unauthorized');
+                        done();
+                    });
+            });
+
+            it('should delete an existing user by ID', function(done){
+
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                    .end(function(e,res){
+                        checkJSendFormat(res.body);
+                        expect(res.status).toBe(200);
+                        expect(res.body.status).toBe('success');
+                        expect(res.body.data).toBe('Deleted');
+                        done();
+                    });
+            });
+
+            it('should fail to delete an existing user by ID if non existnet', function(done){
+
+                superagent.put('https://localhost:8443/api/users/' + user._id + '?access_token=' + token)
+                    .end(function(e,res){
+                        checkJSendFormat(res.body);
+                        expect(res.status).toBe(404);
+                        expect(res.body.status).toBe('fail');
+                        expect(res.body.data).toBe('Not found');
+                        done();
+                    });
+            });
 
         });
 
