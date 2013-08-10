@@ -6,6 +6,7 @@ module.exports = function (app, config) {
 	var pages = require('../app/controllers/pages')(config);
     var authentications = require('../app/controllers/authentications')(config);
     var users = require('../app/controllers/users')(config);
+    var projects = require('../app/controllers/projects')(config);
     var webhook = require('../app/controllers/webhook')(app,config);
 
 	// Web App
@@ -18,12 +19,20 @@ module.exports = function (app, config) {
     app.del('/api/authentications' , authenticate,  authentications.del);
 
 
-
+    // Users
     app.post('/api/users', authenticate, users.create);
     app.get('/api/users', authenticate, users.retrieve);
     app.get('/api/users/:id', authenticate, users.retrieve);
     app.put('/api/users/:id', authenticate, users.update);
     app.del('/api/users/:id', authenticate, users.del);
+
+
+    // Projects
+    app.post('/api/projects', authenticate, projects.create);
+    app.get('/api/projects', authenticate, projects.retrieve);
+    app.get('/api/projects/:id', authenticate, projects.retrieve);
+    app.put('/api/projects/:id', authenticate, projects.update);
+    app.del('/api/projects/:id', authenticate, projects.del);
 
 
     // Web Hook

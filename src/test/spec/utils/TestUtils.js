@@ -17,10 +17,24 @@ var createEmail = function(valid) {
     return createPassword() + 'test.com';
 }
 
+var createProjectName = function(valid) {
+    if(valid) {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 5; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        return text;
+    }
+    return '';
+}
+
 var checkJSendFormat = function(body) {
     expect(body.status).not.toBeUndefined();
     expect(body.data).not.toBeUndefined();
 }
+
+
 
 module.exports = {
 
@@ -31,5 +45,6 @@ module.exports = {
 
     createPassword : createPassword,
     createEmail : createEmail,
-    checkJSendFormat : checkJSendFormat
+    checkJSendFormat : checkJSendFormat,
+    createProjectName : createProjectName
 }
