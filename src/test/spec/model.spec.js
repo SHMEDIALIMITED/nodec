@@ -96,4 +96,19 @@ describe('User Model', function(){
             });
         });
     });
+
+
+    describe('Sanitize', function() {
+
+        it('it should delete password, salt, accessToken and resetToken when calling toJSON', function(done) {
+            User.findOne({email: email}, function(err, user) {
+                var obj = user.toJSON();
+                expect(obj.password).toBeUndefined();
+                expect(obj.accessToken).toBeUndefined();
+                expect(obj.resetToken).toBeUndefined();
+                expect(obj.salt).toBeUndefined();
+                done();
+            });
+        });
+    });
 });
