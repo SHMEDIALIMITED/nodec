@@ -16,9 +16,7 @@ describe('Projects Retrieve', function(){
     var project //
     var name = utils.createProjectName(true);   // Create random project name
 
-    console.log('***********************************************')
-    console.log('Project Name', name);
-    console.log('***********************************************')
+
 
 
     it('should get admin token', function(done){

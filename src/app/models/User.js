@@ -49,6 +49,7 @@ function hash(password, salt) {
 function encryptPassword(password) {
     return hash(password, this.salt);
 }
+
 User.options.toJSON = {};
 User.options.toJSON.transform = function (user, ret, options) {
     // remove the _id of every document before returning the result
@@ -56,6 +57,7 @@ User.options.toJSON.transform = function (user, ret, options) {
     delete ret.salt;
     delete ret.resetToken;
     delete ret.accessToken;
+    delete ret.__v;
 }
 
 module.exports =  mongoose.model('User', User);

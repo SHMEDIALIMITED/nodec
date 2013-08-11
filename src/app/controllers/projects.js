@@ -35,7 +35,8 @@ module.exports = function(config) {
         },
 
         retrieve : function(req, res) {
-            var id = req.params.id
+            var id = req.params.project;
+
             if(id) {
                 if(id.length != 24) return res.send(404, responseFormater.jsend(404, 'Not found'));
                 Project.findById(id, function(err, project) {
@@ -57,13 +58,13 @@ module.exports = function(config) {
         },
 
         del : function(req, res) {
-            var id = req.params.id
+            var id = req.params.project
             if(id) {
                 if(id.length != 24) return res.send(404, responseFormater.jsend(404,'Not found'));
                 Project.findById(id, function(err, project) {
                     if(err)  return res.send(500, responseFormater.jsend(500, 'Internal server error'));
                     if(!project) return res.send(404, responseFormater.jsend(404,'Not found'));
-                    return res.send(200, responseFormater.jsend(200, 'Deleted   '));
+                    return res.send(200, responseFormater.jsend(200, 'Deleted'));
                 });
             }else {
                 return res.send(405, responseFormater.jsend(405, 'Method not allowed'));

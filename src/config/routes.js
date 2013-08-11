@@ -7,6 +7,7 @@ module.exports = function (app, config) {
     var authentications = require('../app/controllers/authentications')(config);
     var users = require('../app/controllers/users')(config);
     var projects = require('../app/controllers/projects')(config);
+    var pipes = require('../app/controllers/pipes')(config, projects);
     var webhook = require('../app/controllers/webhook')(app,config);
 
 	// Web App
@@ -27,12 +28,22 @@ module.exports = function (app, config) {
     app.del('/api/users/:id', authenticate, users.del);
 
 
+    // Pipes
+    app.post('/api/projects/:project/pipes', authenticate, pipes.create);
+    app.get('/api/projects/:project/pipes', authenticate, pipes.retrieve);
+    app.get('/api/projects/:project/pipes/:pipe', authenticate, pipes.retrieve);
+    app.put('/api/projects/:project/pipes/:pipe', authenticate, pipes.update);
+    app.del('/api/projects/:project/pipes/:pipe', authenticate, pipes.del);
+
     // Projects
     app.post('/api/projects', authenticate, projects.create);
     app.get('/api/projects', authenticate, projects.retrieve);
-    app.get('/api/projects/:id', authenticate, projects.retrieve);
-    app.put('/api/projects/:id', authenticate, projects.update);
-    app.del('/api/projects/:id', authenticate, projects.del);
+    app.get('/api/projects/:project', authenticate, projects.retrieve);
+    app.put('/api/projects/:project', authenticate, projects.update);
+    app.del('/api/projects/:project', authenticate, projects.del);
+
+
+
 
 
     // Web Hook

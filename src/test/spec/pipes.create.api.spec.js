@@ -16,15 +16,16 @@ describe('Pipe Create', function(){
     var project; // Test project
 
 
-    it('should get admin token and test project', function(done){
+    it('should get admin token and create new test project', function(done){
 
         superagent.post('https://localhost:8443/api/authentications')
             .send({ email: utils.admin.email , password: utils.admin.password })
             .end(function(e,res){
                 token = res.body.data.access_token;
-                superagent.get('https://localhost:8443/api/projects?access_token=' + token)
+                superagent.post('https://localhost:8443/api/projects?access_token=' + token)
+                    .send({name: utils.createProjectName(true)})
                     .end(function(e,res){
-                        project = res.body.data[0];
+                        project = res.body.data;
                         done();
                     });
             });
