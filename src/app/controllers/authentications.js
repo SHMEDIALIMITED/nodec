@@ -14,7 +14,9 @@ module.exports = function(config) {
     return {
 
         create : function(req, res) {
+
             var missing = {};
+
 
             if(!req.body.email) missing.email = 'missing';
             if(!req.body.password) missing.password = 'missing';
@@ -22,7 +24,7 @@ module.exports = function(config) {
 
             User.findOne({ email: req.body.email }, function(err, user) {
 
-                if(!user) return res.send(403, responseFormater.jsend(401, 'Incorrect credentials'));
+                if(!user) return res.send(403, responseFormater.jsend(403, 'Incorrect credentials'));
 
                 user.login(req.body.password, function(err, user) {
 
@@ -34,7 +36,7 @@ module.exports = function(config) {
 
         del : function(req, res) {
 
-            console.log('HERE', responseFormater.jsend(401, 'Unauthorized'))
+
 
             if(!req.query.access_token) return res.send(401, responseFormater.jsend(401, 'Unauthorized'));
             User.findOne({accessToken: req.query.access_token}, function(err, user) {

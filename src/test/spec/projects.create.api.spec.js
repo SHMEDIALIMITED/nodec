@@ -1,14 +1,6 @@
 /**
  * Created with JetBrains WebStorm.
  * User: admin
- * Date: 10/08/2013
- * Time: 18:56
- * To change this template use File | Settings | File Templates.
- */
-
-/**
- * Created with JetBrains WebStorm.
- * User: admin
  * Date: 06/08/2013
  * Time: 22:01
  * To change this template use File | Settings | File Templates.
@@ -23,9 +15,9 @@ describe('Projects Create', function(){
     var token;  // Admin access token
     var name = utils.createProjectName(true);   // Create random project name
 
-    console.log('***********************************************')
-    console.log('Project Name', name);
-    console.log('***********************************************')
+//    console.log('***********************************************')
+//    console.log('Project Name', name);
+//    console.log('***********************************************')
 
 
     it('should get admin token', function(done){

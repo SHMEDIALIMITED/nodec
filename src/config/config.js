@@ -6,7 +6,8 @@ module.exports = {
       app: {
         name: 'Nodec Dev'
       },
-      db: 'mongodb://localhost/nodec'
+      db: 'mongodb://localhost/nodec',
+      cert : ''
       
     },
     test: {
