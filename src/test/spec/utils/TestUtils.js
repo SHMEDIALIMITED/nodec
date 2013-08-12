@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
+var Task = require('../../../app/models').Task;
+
 var createPassword = function(valid) {
     var pw = Math.random().toString();
     if(valid) return 'Pw' + pw.substr(2,6);
@@ -29,6 +31,22 @@ var createProjectName = function(valid) {
     return '';
 }
 
+var createPipe = function(valid) {
+    if(valid) return {
+        tasks: []
+    };
+
+    return {
+        tasks : 'nkfjdsnkj'
+    }
+
+}
+
+var createTaskID = function(valid) {
+    if(valid) return 'hhhhhhhhhhhhhhhhhh' + Math.random().toString().substr(2,6);
+    return 'njknkjndsjknsdkj'
+}
+
 var checkJSendFormat = function(body) {
     expect(body.status).not.toBeUndefined();
     expect(body.data).not.toBeUndefined();
@@ -46,5 +64,7 @@ module.exports = {
     createPassword : createPassword,
     createEmail : createEmail,
     checkJSendFormat : checkJSendFormat,
-    createProjectName : createProjectName
+    createProjectName : createProjectName,
+    createPipe: createPipe,
+    createTaskID : createTaskID
 }
