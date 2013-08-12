@@ -7,8 +7,9 @@
  */
 
 var Pipe = require('../models').Pipe;
+var Task = require('../models').Task;
 var responseFormater = require('./utils/ResponseFormater');
-
+var async = require('async');
 
 
 module.exports = function(config, projects) {
@@ -123,6 +124,66 @@ module.exports = function(config, projects) {
         },
 
         del : function(req, res) {
+            var id = req.params.pipe;
+            if(id.length != 24) return res.send(404, responseFormater.jsend(404, 'Not found'));
+            if(id) {
+                projects.retrieve(req, {send: function(status, jsend) {
+                    if(jsend.status != 'success') return res.send(status, jsend);
+
+                    var project = jsend.data;
+
+                    Pipe.findById(id, function(err, pipe) {
+                        if(err) return res.send(500, responseFormater.jsend(500, 'Internal server error'));
+                        if(!pipe ) return res.send(404, responseFormater.jsend(404, 'Not found'));
+
+                        Task.find({'_id' : {$in: pipe.tasks}}, function(err, tasks) {
+
+                            if(tasks.length == 0) {
+                                pipe.remove(function(err, pipe) {
+                                    if(err) return res.send(500, responseFormater.jsend(500, 'Internal server error'));
+
+
+
+                                            // TODO remove reference in project model of removed pipe
+
+
+
+
+                                    return res.send(200, responseFormater.jsend(200, 'Deleted'));
+
+                                });
+                            }else{
+                                var q = async.queue(function (task, callback) {
+                                    task.remove(function(err, task) {
+                                        if(err) return res.send(500, responseFormater.jsend(500, 'Internal server error'));
+                                        callback();
+                                    });
+                                }, tasks.length);
+
+                                q.drain = function() {
+                                    pipe.remove(function(err, pipe) {
+                                        if(err) return res.send(500, responseFormater.jsend(500, 'Internal server error'));
+
+                                        project.pipes.forEach(function(err, p){
+                                            if(pipe._id == p._id) {
+                                                // TODO remove reference in project model of removed pipe
+                                                return res.send(200, responseFormater.jsend(200, 'Deleted'));
+                                            }
+                                        })
+                                    });
+                                }
+                                tasks.forEach(function(err, task) {
+                                    if(err) return res.send(500, responseFormater.jsend(500, 'Internal server error'));
+                                    q.push(task);
+                                });
+                            }
+
+                        })
+                    })
+                }});
+            }else{
+                return res.send(404, responseFormater.jsend(404, 'Not found'));
+            }
 
         }
     };

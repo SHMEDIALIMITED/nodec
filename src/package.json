@@ -5,7 +5,7 @@
   "description": "Web app template for Node.js with Backbone/Require frontend for deployment on Heroku",
   "scripts": {
     "start": "node server",
-    "test": "jasmine-node test/spec",
+    "test": "jasmine-node test/spec/pipes.delete.api.spec.js",
     "admin": "node create"
   },
   "engines": {
@@ -26,7 +26,8 @@
     "passport-http-bearer": "~0.2.1",
     "superagent": "~0.15.4",
     "validator": "~1.4.0",
-    "iz": "~0.2.0"
+    "iz": "~0.2.0",
+    "async": "~0.2.9"
   },
   "bugs": {
     "url": "https://github.com/SHMEDIALIMITED/web-app-basic/issues"
